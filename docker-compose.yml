@@ -1,0 +1,38 @@
+services:
+  gitlab:
+    image: gitlab/gitlab-ee:latest  # 使用 GitLab EE 版（或更換為 CE 版：gitlab/gitlab-ce）
+    platform: linux/amd64
+    restart: always
+    hostname: 'gitlab-server'
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url '${GITLAB_EXTERNAL_URL}'
+      GITLAB_ROOT_PASSWORD: '${GITLAB_ROOT_PASSWORD}'
+    ports:
+      - '80:80'      # HTTP 端口
+      - '443:443'    # HTTPS 端口
+      - '22:22'      # SSH 端口
+    volumes:
+      - gitlab-config:/etc/gitlab    # GitLab 配置
+      - gitlab-logs:/var/log/gitlab  # GitLab 日誌
+      - gitlab-data:/var/opt/gitlab  # GitLab 數據
+
+volumes:
+  gitlab-config:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: ${GITLAB_CONFIG_PATH}
+  gitlab-logs:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: ${GITLAB_LOGS_PATH}
+  gitlab-data:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: ${GITLAB_DATA_PATH}
