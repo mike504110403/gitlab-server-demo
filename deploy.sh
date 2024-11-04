@@ -22,7 +22,6 @@ mkdir -p "$DATA_PATH"
 sudo chown -R $(whoami) "$BASE_PATH"
 sudo chmod -R 755 "$BASE_PATH"
 
-echo $GITLAB_ROOT_PASSWORD
 # 啟動 Docker Compose
 docker-compose down
 docker-compose up -d
